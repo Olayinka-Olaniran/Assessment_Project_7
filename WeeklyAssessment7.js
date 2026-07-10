@@ -13,6 +13,8 @@ const choiceB = document.querySelector('label[for="choice-b"]');
 const choiceC = document.querySelector('label[for="choice-c"]');
 const choiceD = document.querySelector('label[for="choice-d"]');
 const allChoices = document.querySelectorAll('input[name="choice"]');
+const resultPercent = document.querySelector('.result-percent');
+const correctAnswerCount = document.querySelector('.correct-count');
 const startBtn = document.querySelector('#start-btn');
 const prevBtn = document.querySelector('#prev-btn');
 const nextBtn = document.querySelector('#next-btn');
@@ -26,7 +28,7 @@ let currentQuestionIndex = 0;
 
 function renderQuizQuestions(){
 	const chosenAnswers = getChosenAnswers();
-	const selectedCategory = quizCategory.options[quizCategory.selectedIndex].value;
+	const selectedCategory = chosenAnswers[0];
 	if(selectedCategory === 'none'){
 		return alert('Please select a category to start the quiz');
 	}
@@ -40,40 +42,68 @@ function renderQuizQuestions(){
 	choiceC.textContent = QuizQuestions[selectedCategory][currentQuestionIndex].options.c;
 	choiceD.textContent = QuizQuestions[selectedCategory][currentQuestionIndex].options.d;
 
+	if (chosenAnswers[1].some((answer) => answer.id === currentQuestionIndex + 1)) {
+		const selectedAnswer = chosenAnswers[1].find((answer) => answer.id === currentQuestionIndex + 1);
+		const selectedChoice = document.querySelector(`input[value="${selectedAnswer.answer}"]`);
+		if (selectedChoice) {
+			selectedChoice.checked = true;
+		}
+	}
+
+	chosenAnswers[1].forEach((answer) => {
+		moveToBtns.forEach((btn) => {
+			if (answer.id === parseInt(btn.dataset.questionNo)) {
+				btn.classList.add('answered');
+			}
+		});
+	});
+
 }
 
 function getChosenAnswers(){
 	  try{
     let chosenAnswers = JSON.parse(localStorage.getItem("chosenAnswers")) || [];
     let validArr = false;
-    chosenAnswers.forEach((answer)=>{
-    if (answer.questionNo && answer.answer) {
+    chosenAnswers[1].forEach((answer)=>{
+    if (answer.id && answer.answer) {
       validArr = true;
     }
   });
-  return validArr ? chosenAnswers : []
-  }catch(error){return []}
+  return validArr ? chosenAnswers : [quizCategory.options[quizCategory.selectedIndex].value, []];
+  }catch(error){return [quizCategory.options[quizCategory.selectedIndex].value, []]}
 }
 
 function storeChosenAnswers(e){
 	const chosenAnswers = getChosenAnswers();
-	currentAnswer = {
+	const currentAnswer = {
 		id: currentQuestionIndex + 1,
 		answer: e.target.value
 	};
 
-	chosenAnswers.forEach((answer) => {
+	chosenAnswers[1].forEach((answer) => {
 		if(answer.id === currentAnswer.id){
 			answer.answer = currentAnswer.answer;
 		}
 	});
-	if(!chosenAnswers.some((answer) => answer.id === currentAnswer.id)){
-		chosenAnswers.push(currentAnswer);
+	if(!chosenAnswers[1].some((answer) => answer.id === currentAnswer.id)){
+		chosenAnswers[1].push(currentAnswer);
 	}
 	localStorage.setItem("chosenAnswers", JSON.stringify(chosenAnswers));
 }
 
 function renderQuizResults(){
+	const chosenAnswers = getChosenAnswers();
+	const correctAnswers = QuizQuestions[`${chosenAnswers[0]}Answers`];
+	const correctCount = chosenAnswers[1].filter((answer) => {
+		answer.answer == correctAnswers[answer.id - 1];
+		console.log(answer.answer, correctAnswers[answer.id - 1]);
+		return answer.answer == correctAnswers[answer.id - 1];
+	}).length;
+	resultPercent.textContent = `${Math.round((correctCount / 10) * 100)}%`;
+	correctAnswerCount.textContent = correctCount;
+	resultRing.style.setProperty('--percent', Math.round((correctCount / 10) * 100));
+	resultPage.classList.remove('hidden');
+	quizPage.classList.add('hidden');
 
 }
 
@@ -88,7 +118,7 @@ function finishQuiz(){
 startBtn.addEventListener('click',renderQuizQuestions);
 
 allChoices.forEach((choice) => {
-	choice.addEventListener('click',() => {
+	choice.addEventListener('click',(e) => {
 		storeChosenAnswers(e);
 	});
 });
@@ -124,3 +154,25 @@ moveToBtns.forEach((btn) => {
 		renderQuizQuestions();
 	});
 });	
+
+submitBtn.addEventListener('click',() => {
+	const userDecision= confirm('Are you sure you want to submit the quiz?');
+	if(userDecision){
+		renderQuizResults();
+	}else{
+		return
+	}
+
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+	const chosenAnswers = getChosenAnswers();
+	if (chosenAnswers[0] !== 'none') {
+		renderQuizQuestions();
+	}
+});
+
+finishBtn.addEventListener('click', () => {
+	localStorage.removeItem("chosenAnswers");
+	location.reload();
+});
