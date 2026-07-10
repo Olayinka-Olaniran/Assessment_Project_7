@@ -20,8 +20,10 @@ const prevBtn = document.querySelector('#prev-btn');
 const nextBtn = document.querySelector('#next-btn');
 const moveToBtns = document.querySelectorAll('.move-to-question-btn');
 const submitBtn = document.querySelector('#submit-btn');
+const navBtns = document.querySelector('.nav-btns');
+const resultBtn = document.querySelector('#result-btn');
 const reviewBtn = document.querySelector('#review-btn');
-const finishBtn = document.querySelector('#finish-btn');
+const finishBtns = document.querySelectorAll('.finish-btn');
 const resultRing = document.querySelector('.result-ring');
 
 let currentQuestionIndex = 0;
@@ -93,6 +95,7 @@ function storeChosenAnswers(e){
 
 function renderQuizResults(){
 	const chosenAnswers = getChosenAnswers();
+	chosenAnswers[2] = true;
 	const correctAnswers = QuizQuestions[`${chosenAnswers[0]}Answers`];
 	const correctCount = chosenAnswers[1].filter((answer) => {
 		answer.answer == correctAnswers[answer.id - 1];
@@ -104,15 +107,17 @@ function renderQuizResults(){
 	resultRing.style.setProperty('--percent', Math.round((correctCount / 10) * 100));
 	resultPage.classList.remove('hidden');
 	quizPage.classList.add('hidden');
-
+	localStorage.setItem("chosenAnswers", JSON.stringify(chosenAnswers));
 }
 
 function renderQuizReview(){
-
-}
-
-function finishQuiz(){
-
+	submitBtn.classList.add('hidden');
+	navBtns.classList.remove('hidden');
+	resultPage.classList.add('hidden');
+	allChoices.forEach((choice) => {
+		choice.disabled = true;
+	});
+	renderQuizQuestions();
 }
 
 startBtn.addEventListener('click',renderQuizQuestions);
@@ -165,14 +170,25 @@ submitBtn.addEventListener('click',() => {
 
 });
 
+reviewBtn.addEventListener('click', () => {
+	renderQuizReview();
+});
+
+resultBtn.addEventListener('click', () => {
+	renderQuizResults();
+});
+
+finishBtns.forEach((finishBtn)=>finishBtn.addEventListener('click', () => {
+	localStorage.removeItem("chosenAnswers");
+	location.reload();
+}));
+
 document.addEventListener('DOMContentLoaded', () => {
 	const chosenAnswers = getChosenAnswers();
-	if (chosenAnswers[0] !== 'none') {
+	if (chosenAnswers[0] !== 'none' && chosenAnswers[1].length > 0 && !chosenAnswers[2]) {
 		renderQuizQuestions();
+	}else if (chosenAnswers[0] !== 'none' && chosenAnswers[1].length > 0 && chosenAnswers[2]) {
+		renderQuizReview();
 	}
 });
 
-finishBtn.addEventListener('click', () => {
-	localStorage.removeItem("chosenAnswers");
-	location.reload();
-});

@@ -30,7 +30,7 @@ body {
 }
 
 .hidden {
-	display: none;
+	display: none !important;
 }
 
 /* Typography styling */
@@ -252,18 +252,18 @@ Redundant Progress Bar (not currently used)
 }
 
 /* Prev / Next buttons sit side by side beneath the choices */
-.prev-next{
+.prev-next, .nav-btns {
     display: flex;
     flex-direction: row;
     margin: 0.5rem 0%;
 }
 #prev-btn,
-#next-btn, #review-btn, #finish-btn {
+#next-btn, #review-btn, #result-btn, .finish-btn {
     width: 48%;
     display: inline-block;
 }
 
-#prev-btn, #review-btn {
+#prev-btn, #review-btn, #result-btn {
     margin-right: 4%;
 }
 
