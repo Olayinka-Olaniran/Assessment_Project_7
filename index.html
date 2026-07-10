@@ -32,6 +32,16 @@
 	<button id="start-btn" class="btn">Start Quiz</button>
     </div>
 
+	<dialog id="alert-dialog">
+    <!-- Top row for close button alignment -->
+    <div class="dialog-header">
+        <button id="alert-close-x" class="close-x-btn">&times;</button>
+    </div>
+    <div class="dialog-body">
+        <p>Please select a category to start the quiz!</p>
+    </div>
+</dialog>
+
 	<div class="quiz-container hidden">
 		<h1><span class="quiz-category"></span> Quiz Questions</h1>
 
@@ -77,6 +87,14 @@
 			<button class="finish-btn btn">Finish Quiz</button>
 		</div>
 	</div>
+
+	<dialog id="submit-confirm-dialog">
+    <p>Are you sure you want to submit the quiz?</p>
+    <div class="nav-btns">
+        <button id="dialog-confirm-btn" class="btn">Submit</button>
+        <button id="dialog-cancel-btn" class="btn">Cancel</button>
+    </div>
+</dialog>
 
 	<div class="result-container hidden">
 		<h1><span class="quiz-category">Javascript</span> Quiz Complete!</h1>

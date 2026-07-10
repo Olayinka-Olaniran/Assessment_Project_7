@@ -25,6 +25,11 @@ const resultBtn = document.querySelector('#result-btn');
 const reviewBtn = document.querySelector('#review-btn');
 const finishBtns = document.querySelectorAll('.finish-btn');
 const resultRing = document.querySelector('.result-ring');
+const confirmDialog = document.getElementById('submit-confirm-dialog');
+const dialogConfirmBtn = document.getElementById('dialog-confirm-btn');
+const dialogCancelBtn = document.getElementById('dialog-cancel-btn');
+const alertDialog = document.getElementById('alert-dialog');
+const alertCloseX = document.getElementById('alert-close-x');
 
 let currentQuestionIndex = 0;
 
@@ -32,7 +37,8 @@ function renderQuizQuestions(){
 	const chosenAnswers = getChosenAnswers();
 	const selectedCategory = chosenAnswers[0];
 	if(selectedCategory === 'none'){
-		return alert('Please select a category to start the quiz');
+    alertDialog.showModal();
+    return;
 	}
 	startPage.classList.add('hidden');
 	quizPage.classList.remove('hidden');
@@ -267,13 +273,18 @@ moveToBtns.forEach((btn) => {
 });	
 
 submitBtn.addEventListener('click',() => {
-	const userDecision= confirm('Are you sure you want to submit the quiz?');
-	if(userDecision){
-		renderQuizResults();
-	}else{
-		return
-	}
+    confirmDialog.showModal(); 
+});
 
+// Follow-up Action: User confirms submission
+dialogConfirmBtn.addEventListener('click', () => {
+    confirmDialog.close();
+    renderQuizResults(); // Executes your calculations dashboard view
+});
+
+// Follow-up Action: User cancels submission
+dialogCancelBtn.addEventListener('click', () => {
+    confirmDialog.close(); // Simply tucks the dialog window back away
 });
 
 reviewBtn.addEventListener('click', () => {
@@ -289,6 +300,37 @@ finishBtns.forEach((finishBtn)=>finishBtn.addEventListener('click', () => {
 	localStorage.removeItem("chosenAnswers");
 	location.reload();
 }));
+
+// Click the X button to close the modal window
+alertCloseX.addEventListener('click', () => {
+    alertDialog.close();
+});
+
+// Recommended Click-Outside Auto Close Logic
+alertDialog.addEventListener('click', (event) => {
+    const dialogDimensions = alertDialog.getBoundingClientRect();
+    if (
+        event.clientX < dialogDimensions.left ||
+        event.clientX > dialogDimensions.right ||
+        event.clientY < dialogDimensions.top ||
+        event.clientY > dialogDimensions.bottom
+    ) {
+        alertDialog.close();
+    }
+});
+
+// Recommended Click-Outside Auto Close Logic for Submit Confirmation
+confirmDialog.addEventListener('click', (event) => {
+    const dialogDimensions = confirmDialog.getBoundingClientRect();
+    if (
+        event.clientX < dialogDimensions.left ||
+        event.clientX > dialogDimensions.right ||
+        event.clientY < dialogDimensions.top ||
+        event.clientY > dialogDimensions.bottom
+    ) {
+        confirmDialog.close(); // Closes safely if user clicks the backdrop area
+    }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
 	const chosenAnswers = getChosenAnswers();
