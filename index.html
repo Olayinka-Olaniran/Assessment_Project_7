@@ -23,7 +23,7 @@
 	</ul>
 
 	<select id="category">
-		<option value="">-- Select a category --</option>
+		<option value="none">-- Select a category --</option>
 		<option value="html">HTML</option>
 		<option value="css">CSS</option>
 		<option value="javascript">JavaScript</option>
@@ -33,23 +33,23 @@
     </div>
 
 	<div class="quiz-container hidden">
-		<h1><span class="quiz-category">Javascript</span> Quiz Questions</h1>
+		<h1><span class="quiz-category"></span> Quiz Questions</h1>
 
 		<div class="question-display">
 
-			<h3><i>Question <span class="question-no">1</span> of 10</i></h3>
+			<h3><i>Question <span class="question-no"></span> of 10</i></h3>
 
-			<p class="question">what does html stand for</p>
-			<input type="radio" id="choice-a" name="choice"></input>
+			<p class="question"></p>
+			<input type="radio" id="choice-a" name="choice" value="a"/>
 			<label for = "choice-a"></label>
 
-			<input type="radio" id="choice-b" name="choice"></input>
+			<input type="radio" id="choice-b" name="choice" value="b"/>
 			<label for = "choice-b"></label>
 
-			<input type="radio" id="choice-c" name="choice"></input>
+			<input type="radio" id="choice-c" name="choice" value="c"/>
 			<label for = "choice-c"></label>
 
-			<input type="radio" id="choice-d" name="choice"></input>
+			<input type="radio" id="choice-d" name="choice" value="d"/>
 			<label for = "choice-d"></label>
 		</div>
 
@@ -59,16 +59,16 @@
 		</div>
 
 		<div>
-			<button id="q-1" class="move-to-question-btn">1</button>
-			<button id="q-2" class="move-to-question-btn">2</button>
-			<button id="q-3" class="move-to-question-btn">3</button>
-			<button id="q-4" class="move-to-question-btn">4</button>
-			<button id="q-5" class="move-to-question-btn">5</button>
-			<button id="q-6" class="move-to-question-btn">6</button>
-			<button id="q-7" class="move-to-question-btn">7</button>
-			<button id="q-8" class="move-to-question-btn">8</button>
-			<button id="q-9" class="move-to-question-btn">9</button>
-			<button id="q-10" class="move-to-question-btn">10</button>
+			<button id="q-1" data-question-no="1" class="move-to-question-btn">1</button>
+			<button id="q-2" data-question-no="2" class="move-to-question-btn">2</button>
+			<button id="q-3" data-question-no="3" class="move-to-question-btn">3</button>
+			<button id="q-4" data-question-no="4" class="move-to-question-btn">4</button>
+			<button id="q-5" data-question-no="5" class="move-to-question-btn">5</button>
+			<button id="q-6" data-question-no="6" class="move-to-question-btn">6</button>
+			<button id="q-7" data-question-no="7" class="move-to-question-btn">7</button>
+			<button id="q-8" data-question-no="8" class="move-to-question-btn">8</button>
+			<button id="q-9" data-question-no="9" class="move-to-question-btn">9</button>
+			<button id="q-10" data-question-no="10" class="move-to-question-btn">10</button>
 		</div>
 
 		<button id="submit-btn" class="btn">Submit</button>

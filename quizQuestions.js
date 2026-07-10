@@ -9,7 +9,8 @@
 					c: "Home Tool Markup Language",
 					d: "Hyperlink and Text Markup Language"
 				},
-			answer: "a"
+            correctMsg: "Correct ✓: Hyper Text Markup Language is the standard markup language for documents designed to be displayed in a web browser.",
+            incorrectMsg: "Incorrect X: 'Home' or 'Hyperlink' don't quite fit. HTML stands for Hyper Text Markup Language."
 		},
 		{
 			id: 2,
@@ -20,7 +21,6 @@
 				c: "Google",
 				d: "Microsoft"
 			},
-			answer: "b",
 			correctMsg: "Correct ✓: The W3C oversees international community web standards.",
 			incorrectMsg: "Incorrect X: Mozilla, Google, and Microsoft build browsers, but they do not maintain the official web standards."
 		},
@@ -33,7 +33,6 @@
 				c: "<h1>",
 				d: "<head>"
 			},
-			answer: "c",
 			correctMsg: "Correct ✓: <h1> defines the most important and visually largest heading level.",
 			incorrectMsg: "Incorrect X: Remember that heading tags go down in structural scale from h1 down to h6."
 		},
@@ -46,7 +45,6 @@
 				c: "<break>",
 				d: "<hr>"
 			},
-			answer: "a",
 			correctMsg: "Correct ✓: <br> is an empty tag used to produce a single line break break.",
 			incorrectMsg: "Incorrect X: <break> is not valid HTML, and <hr> creates a horizontal line divider rule instead."
 		},
@@ -59,7 +57,6 @@
 				c: "<a url=\"http://google.com\">Google</a>",
 				d: "<href>http://google.com</href>"
 			},
-			answer: "b",
 			correctMsg: "Correct ✓: The href attribute specifies the anchor link's destination address.",
 			incorrectMsg: "Incorrect X: Anchor tags must explicitly use the 'href' attribute to direct traffic."
 		},
@@ -72,7 +69,6 @@
 				c: "^",
 				d: "/"
 			},
-			answer: "d",
 			correctMsg: "Correct ✓: The forward slash right after the opening bracket closing tags.",
 			incorrectMsg: "Incorrect X: An end tag must always lead its body contents with a forward slash symbol."
 		},
@@ -85,7 +81,6 @@
 				c: "<ol>",
 				d: "<dl>"
 			},
-			answer: "c",
 			correctMsg: "Correct ✓: <ol> stands for Ordered List, which natively numbers its structural components.",
 			incorrectMsg: "Incorrect X: Unordered lists <ul> generate standard bullet points instead of numbers."
 		},
@@ -98,7 +93,6 @@
 				c: "<list>",
 				d: "<bl>"
 			},
-			answer: "b",
 			correctMsg: "Correct ✓: <ul> stands for Unordered List, which generates bullet items.",
 			incorrectMsg: "Incorrect X: Numbers are created using <ol>. There is no <bl> element tag in HTML specs."
 		},
@@ -111,7 +105,6 @@
 				c: "<img href=\"image.gif\" alt=\"MyImage\">",
 				d: "<img url=\"image.gif\">"
 			},
-			answer: "a",
 			correctMsg: "Correct ✓: The <img> tag relies on the 'src' parameter to correctly point to asset links.",
 			incorrectMsg: "Incorrect X: HTML images utilize abbreviated <img> elements referencing asset links with 'src'."
 		},
@@ -124,11 +117,11 @@
 				c: "<navbar>",
 				d: "<links>"
 			},
-			answer: "b",
 			correctMsg: "Correct ✓: <nav> is a semantic HTML element designated specifically for website navigation blocks.",
 			incorrectMsg: "Incorrect X: The full terms 'navigate' and 'navbar' are developer slang terms, not valid elements."
 		}
 	],
+    htmlAnswers: ["a", "b", "c", "a", "b", "d", "c", "b", "a", "b"],
 
 	css: [
 		{
@@ -140,7 +133,6 @@
 					c: "Cascading Style Sheets",
 					d: "Colorful Style Sheets"
 				},
-				answer: "c",
 				correctMsg: "Correct ✓: Cascading Style Sheets defines how layout assets appear in structured documents.",
 				incorrectMsg: "Incorrect X: Creative or Computer don't apply here. CSS stands for Cascading Style Sheets."
 			},
@@ -153,7 +145,6 @@
 					c: "<style src=\"mystyle.css\">",
 					d: "<style href=\"mystyle.css\">"
 				},
-				answer: "b",
 				correctMsg: "Correct ✓: External references use a self-closing <link> element targeting reference documents.",
 				incorrectMsg: "Incorrect X: External target configurations belong inside modern <link> elements, not scoped <style> markers."
 			},
@@ -166,7 +157,6 @@
 					c: "In the <head> section",
 					d: "Inside the <html> element root"
 				},
-				answer: "c",
 				correctMsg: "Correct ✓: The head contains metadata, style directives, and asset relations for rendering pipelines.",
 				incorrectMsg: "Incorrect X: Putting styles elsewhere delays paint operations. Keep them inside the <head> elements."
 			},
@@ -179,7 +169,6 @@
 					c: "<css>",
 					d: "<design>"
 				},
-				answer: "b",
 				correctMsg: "Correct ✓: Emitting structural updates inside direct documents requires declaring raw <style> blocks.",
 				incorrectMsg: "Incorrect X: Scripts manage script files, while explicit styles require <style> element containers."
 			},
@@ -192,7 +181,6 @@
 					c: "font",
 					d: "style"
 				},
-				answer: "d",
 				correctMsg: "Correct ✓: Adding inline definitions to an element directly is done via the singular style attribute.",
 				incorrectMsg: "Incorrect X: The plural 'styles' attribute is invalid; targeting localized updates uses the 'style' attribute."
 			},
@@ -205,7 +193,6 @@
 					c: "bgcolor",
 					d: "surface-color"
 				},
-				answer: "b",
 				correctMsg: "Correct ✓: Modifications on element container fills are handled by the background-color parameter.",
 				incorrectMsg: "Incorrect X: The color rule is scoped to content typography text values, not element backdrops."
 			},
@@ -218,7 +205,6 @@
 					c: "all.h1 {background-color:#FFFFFF;}",
 					d: "h1 {bg:#FFFFFF;}"
 				},
-				answer: "a",
 				correctMsg: "Correct ✓: Directly declaring rule blocks targeting raw elements applies styles to all matches globally.",
 				incorrectMsg: "Incorrect X: Class modifications like '.all' are required only when targeting custom developer elements."
 			},
@@ -231,7 +217,6 @@
 					c: "font-color",
 					d: "color"
 				},
-				answer: "d",
 				correctMsg: "Correct ✓: Text-based fill assignments use the foundational CSS property 'color'.",
 				incorrectMsg: "Incorrect X: Properties like 'font-color' or 'text-color' do not exist in official CSS specs."
 			},
@@ -244,7 +229,6 @@
 					c: "font-size",
 					d: "text-style"
 				},
-				answer: "c",
 				correctMsg: "Correct ✓: Controlling typographic rendering size parameters is designated to font-size updates.",
 				incorrectMsg: "Incorrect X: Layout elements rely explicitly on the font-size keyword rule to alter typography sizing scales."
 			},
@@ -257,11 +241,13 @@
 					c: "a {text-decoration:no-underline;}",
 					d: "a {text-style:none;}"
 				},
-				answer: "a",
 				correctMsg: "Correct ✓: Underline properties belong to text decorations, which are turned off with a value of 'none'.",
 				incorrectMsg: "Incorrect X: Modifying defaults requires setting text-decoration to none, not custom parameters."
 			}
 	],
+
+    cssAnswers: ["c", "b", "c", "b", "d", "b", "a", "d", "c", "a"],
+
 	javascript: [
 		{
 			id: 1,
@@ -272,7 +258,6 @@
 				c: "<script>",
 				d: "<js>"
 			},
-			answer: "c",
 			correctMsg: "Correct ✓: Scripting code targets and execution tasks fall natively within standard <script> elements.",
 			incorrectMsg: "Incorrect X: Words like 'javascript' or 'js' are file types, but the element name is <script>."
 		},
@@ -285,7 +270,6 @@
 				c: "msg('Hello World');",
 				d: "alert('Hello World');"
 			},
-			answer: "d",
 			correctMsg: "Correct ✓: The window object exposes an explicit global runtime function named alert().",
 			incorrectMsg: "Incorrect X: System commands like 'msgBox' belong to VB, not modern native web platform environments."
 		},
@@ -298,7 +282,6 @@
 				c: "function = myFunction()",
 				d: "def myFunction()"
 			},
-			answer: "a",
 			correctMsg: "Correct ✓: Standard functions are initialized with the function keyword followed by brackets.",
 			incorrectMsg: "Incorrect X: 'def' belongs to Python pipelines, and adding assignment symbols will throw errors."
 		},
@@ -311,7 +294,6 @@
 				c: "call function myFunction()",
 				d: "execute myFunction()"
 			},
-			answer: "b",
 			correctMsg: "Correct ✓: Invoking defined scope actions simply requires writing the label followed by parentheses.",
 			incorrectMsg: "Incorrect X: Prefix commands like 'call' are not required to execute standard JavaScript functions."
 		},
@@ -324,7 +306,6 @@
 				c: "if (i == 5)",
 				d: "if i = 5"
 			},
-			answer: "c",
 			correctMsg: "Correct ✓: Conditional checking routes evaluate data wrapped within standard parameter blocks.",
 			incorrectMsg: "Incorrect X: Conditional control statements in JavaScript require enclosing the evaluation target within parentheses."
 		},
@@ -337,7 +318,6 @@
 				c: "while (i <= 10; i++)",
 				d: "while i <= 10"
 			},
-			answer: "a",
 			correctMsg: "Correct ✓: While-loop conditions require wrapping their true/false evaluation target within parentheses.",
 			incorrectMsg: "Incorrect X: Do not combine for-loop items inside while declarations. Enclose condition targets in parenthesis."
 		},
@@ -350,7 +330,6 @@
 				c: "<!--This is a comment-->",
 				d: "#This is a comment"
 			},
-			answer: "b",
 			correctMsg: "Correct ✓: Double forward slashes specify inline comment overrides for standard compilation scopes.",
 			incorrectMsg: "Incorrect X: HTML uses angle brackets, Python uses hash marks, but JavaScript uses forward slashes."
 		},
@@ -363,7 +342,6 @@
 				c: "var colors = ['red', 'green', 'blue']",
 				d: "var colors = 1 = ('red'), 2 = ('green')"
 			},
-			answer: "c",
 			correctMsg: "Correct ✓: Sequential collection items are encapsulated using standard square bracket syntax.",
 			incorrectMsg: "Incorrect X: Parentheses specify arguments or execution routes, whereas arrays require square bracket bounds."
 		},
@@ -376,7 +354,6 @@
 				c: "Math.rnd(7.25)",
 				d: "rnd(7.25)"
 			},
-			answer: "a",
 			correctMsg: "Correct ✓: Rounding values utilizes the global Math engine API namespace method Math.round().",
 			incorrectMsg: "Incorrect X: Methods must be accessed directly through the global Math object namespace."
 		},
@@ -389,11 +366,12 @@
 				c: "onclick",
 				d: "onmouseclick"
 			},
-			answer: "c",
 			correctMsg: "Correct ✓: The 'onclick' event attribute captures pointing device activation interactions on DOM nodes.",
 			incorrectMsg: "Incorrect X: Do not confuse standard interaction events with custom mouse variations like 'onmouseclick'."
 		}
-	]
+	],
+
+    javascriptAnswers: ["c", "d", "a", "b", "c", "a", "b", "c", "a", "c"],
 }
 
 export { QuizQuestions };
