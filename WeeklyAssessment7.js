@@ -68,6 +68,7 @@ function renderQuizQuestions(){
 	});
 
 	if(chosenAnswers[2]){
+		
 		const correctAnswers = QuizQuestions[`${chosenAnswers[0]}Answers`];
 		chosenAnswers[1].forEach((answer) => {
 		if(answer.answer == correctAnswers[answer.id - 1]){
@@ -82,19 +83,27 @@ function renderQuizQuestions(){
 	}
 
 if(chosenAnswers[2]){ 
+	let selectedAnswer;
+	let selectedChoice;
+	let associatedLabel;
 	const correctAnswers = QuizQuestions[`${chosenAnswers[0]}Answers`];
-	const selectedAnswer = chosenAnswers[1].find((answer) => answer.id === currentQuestionIndex + 1);
-	const selectedChoice = document.querySelector(`input[value="${selectedAnswer.answer}"]`);
-	const correctInputChoice = document.querySelector(`input[value="${correctAnswers[currentQuestionIndex]}"]`)
+	if(!chosenAnswers[1] == []){
+		selectedAnswer = chosenAnswers[1].find((answer) => answer.id === currentQuestionIndex + 1)
+	}else{
+		selectedAnswer = undefined;
+	}
+	if(selectedAnswer != undefined){
+	selectedChoice = document.querySelector(`input[value="${selectedAnswer.answer}"]`);
+	}
 	
+	const correctInputChoice = document.querySelector(`input[value="${correctAnswers[currentQuestionIndex]}"]`)
+
 	const correctMsgElement = document.createElement('div');
     correctMsgElement.className = 'review-correct-msg-text';
     correctMsgElement.style.marginTop = '0.5rem';
     correctMsgElement.style.fontSize = '0.85rem';
     correctMsgElement.style.fontWeight = 'normal';
     correctMsgElement.textContent = QuizQuestions[chosenAnswers[0]][currentQuestionIndex].correctMsg;
-
-    
 
 	const wrongMsgElement = document.createElement('div');
     wrongMsgElement.className = 'review-wrong-msg-text';
@@ -107,10 +116,11 @@ if(chosenAnswers[2]){
 
     if(selectedChoice) {
         // Grab the actual styled label next to the input
-        const associatedLabel = selectedChoice.nextElementSibling;
+        associatedLabel = selectedChoice.nextElementSibling;
+	}
         const correctInputChoiceLabel = correctInputChoice.nextElementSibling;
-        if (associatedLabel) {
-			if(selectedAnswer == undefined){
+        
+			if(selectedAnswer == undefined ){
 				correctInputChoiceLabel.style.borderColor = '#4caf50';
                 correctInputChoiceLabel.style.backgroundColor = 'rgba(76, 175, 80, 0.12)';
                 correctInputChoiceLabel.style.color = '#4caf50';
@@ -132,8 +142,8 @@ if(chosenAnswers[2]){
                 correctInputChoiceLabel.style.color = '#4caf50';
 				correctInputChoiceLabel.appendChild(correctMsgElement);
             }
-        }
-    }
+        
+    
 }
 }
 
@@ -146,6 +156,10 @@ function getChosenAnswers(){
       validArr = true;
     }
   });
+  
+	if(chosenAnswers[2]){
+		 return validArr ? chosenAnswers : [quizCategory.options[quizCategory.selectedIndex].value, [], true];
+	}
   return validArr ? chosenAnswers : [quizCategory.options[quizCategory.selectedIndex].value, []];
   }catch(error){return [quizCategory.options[quizCategory.selectedIndex].value, []]}
 }
@@ -171,6 +185,7 @@ function storeChosenAnswers(e){
 function renderQuizResults(){
 	const chosenAnswers = getChosenAnswers();
 	chosenAnswers[2] = true;
+	console.log(chosenAnswers[0], chosenAnswers[1], chosenAnswers[2]);
 	const correctAnswers = QuizQuestions[`${chosenAnswers[0]}Answers`];
 	const correctCount = chosenAnswers[1].filter((answer) => {
 		answer.answer == correctAnswers[answer.id - 1];
@@ -277,10 +292,9 @@ finishBtns.forEach((finishBtn)=>finishBtn.addEventListener('click', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
 	const chosenAnswers = getChosenAnswers();
-	if (chosenAnswers[0] !== 'none' && chosenAnswers[1].length > 0 && !chosenAnswers[2]) {
+	if (chosenAnswers[0] !== 'none' && !chosenAnswers[2]) {
 		renderQuizQuestions();
-	}else if (chosenAnswers[0] !== 'none' && chosenAnswers[1].length > 0 && chosenAnswers[2]) {
+	}else if (chosenAnswers[0] !== 'none' && chosenAnswers[2]) {
 		renderQuizReview();
 	}
 });
-
