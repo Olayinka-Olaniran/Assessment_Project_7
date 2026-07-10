@@ -4,14 +4,32 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>Untitled</title>
+	<title>Quiz App</title>
     <link rel="stylesheet" href="WeeklyAssessment7.css">
 	<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;margin:2rem}</style>
 </head>
 <body>
-    <div class="card">
-	<h1>Welcome</h1>
-	<p>This is a minimal HTML document.</p>
+    <div class="container">
+	<h1>Welcome To The Quiz App</h1>
+
+	<h3>Instructions:</h3>
+
+	<ul>
+		<li>You will be presented with 10 questions.</li>
+		<li>You have 5 minutes to complete the quiz.</li>
+		<li>Click the "Submit" button when you are done.</li>
+		<li>Select a category from the dropdown menu to start the quiz.</li>
+		<li>Good luck!</li>
+	</ul>
+
+	<select id="category">
+		<option value="">-- Select a category --</option>
+		<option value="html">HTML</option>
+		<option value="css">CSS</option>
+		<option value="javascript">JavaScript</option>
+	</select>
+
+	<button id="start-btn" class="btn">Start Quiz</button>
     </div>
     
     <script src="WeeklyAssessment7.js"></script>
