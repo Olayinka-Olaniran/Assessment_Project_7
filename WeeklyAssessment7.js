@@ -44,6 +44,13 @@ function renderQuizQuestions(){
 	choiceC.textContent = QuizQuestions[selectedCategory][currentQuestionIndex].options.c;
 	choiceD.textContent = QuizQuestions[selectedCategory][currentQuestionIndex].options.d;
 
+	const allRadioInputs = document.querySelectorAll('input[type="radio"]');
+    allRadioInputs.forEach(input => {
+        input.checked = false;
+        input.style.accentColor = ''; // Clears color overrides from previous questions
+    });
+
+
 	if (chosenAnswers[1].some((answer) => answer.id === currentQuestionIndex + 1)) {
 		const selectedAnswer = chosenAnswers[1].find((answer) => answer.id === currentQuestionIndex + 1);
 		const selectedChoice = document.querySelector(`input[value="${selectedAnswer.answer}"]`);
@@ -60,6 +67,74 @@ function renderQuizQuestions(){
 		});
 	});
 
+	if(chosenAnswers[2]){
+		const correctAnswers = QuizQuestions[`${chosenAnswers[0]}Answers`];
+		chosenAnswers[1].forEach((answer) => {
+		if(answer.answer == correctAnswers[answer.id - 1]){
+			moveToBtns.forEach((btn) => {
+			if (answer.id === parseInt(btn.dataset.questionNo) && answer.answer === correctAnswers[answer.id - 1]) {
+				btn.classList.remove('answered');
+				btn.classList.add('correct');
+			}
+		});
+		}
+	})
+	}
+
+if(chosenAnswers[2]){ 
+	const correctAnswers = QuizQuestions[`${chosenAnswers[0]}Answers`];
+	const selectedAnswer = chosenAnswers[1].find((answer) => answer.id === currentQuestionIndex + 1);
+	const selectedChoice = document.querySelector(`input[value="${selectedAnswer.answer}"]`);
+	const correctInputChoice = document.querySelector(`input[value="${correctAnswers[currentQuestionIndex]}"]`)
+	
+	const correctMsgElement = document.createElement('div');
+    correctMsgElement.className = 'review-correct-msg-text';
+    correctMsgElement.style.marginTop = '0.5rem';
+    correctMsgElement.style.fontSize = '0.85rem';
+    correctMsgElement.style.fontWeight = 'normal';
+    correctMsgElement.textContent = QuizQuestions[chosenAnswers[0]][currentQuestionIndex].correctMsg;
+
+    
+
+	const wrongMsgElement = document.createElement('div');
+    wrongMsgElement.className = 'review-wrong-msg-text';
+    wrongMsgElement.style.marginTop = '0.5rem';
+    wrongMsgElement.style.fontSize = '0.85rem';
+    wrongMsgElement.style.fontWeight = 'normal';
+    wrongMsgElement.textContent = QuizQuestions[chosenAnswers[0]][currentQuestionIndex].incorrectMsg;
+
+    
+
+    if(selectedChoice) {
+        // Grab the actual styled label next to the input
+        const associatedLabel = selectedChoice.nextElementSibling;
+        const correctInputChoiceLabel = correctInputChoice.nextElementSibling;
+        if (associatedLabel) {
+			if(selectedAnswer == undefined){
+				correctInputChoiceLabel.style.borderColor = '#4caf50';
+                correctInputChoiceLabel.style.backgroundColor = 'rgba(76, 175, 80, 0.12)';
+                correctInputChoiceLabel.style.color = '#4caf50';
+				correctInputChoiceLabel.appendChild(correctMsgElement);
+			}else if(selectedAnswer.answer == correctAnswers[currentQuestionIndex]){
+                // Correct styling overrides
+                associatedLabel.style.borderColor = '#4caf50';
+                associatedLabel.style.backgroundColor = 'rgba(76, 175, 80, 0.12)';
+                associatedLabel.style.color = '#4caf50';
+				associatedLabel.appendChild(correctMsgElement);
+            } else if(selectedAnswer.answer != correctAnswers[currentQuestionIndex]){
+                // Incorrect styling overrides
+                associatedLabel.style.borderColor = '#f44336';
+                associatedLabel.style.backgroundColor = 'rgba(244, 67, 54, 0.12)';
+                associatedLabel.style.color = '#f44336';
+				associatedLabel.appendChild(wrongMsgElement);
+				correctInputChoiceLabel.style.borderColor = '#4caf50';
+                correctInputChoiceLabel.style.backgroundColor = 'rgba(76, 175, 80, 0.12)';
+                correctInputChoiceLabel.style.color = '#4caf50';
+				correctInputChoiceLabel.appendChild(correctMsgElement);
+            }
+        }
+    }
+}
 }
 
 function getChosenAnswers(){
@@ -99,7 +174,6 @@ function renderQuizResults(){
 	const correctAnswers = QuizQuestions[`${chosenAnswers[0]}Answers`];
 	const correctCount = chosenAnswers[1].filter((answer) => {
 		answer.answer == correctAnswers[answer.id - 1];
-		console.log(answer.answer, correctAnswers[answer.id - 1]);
 		return answer.answer == correctAnswers[answer.id - 1];
 	}).length;
 	resultPercent.textContent = `${Math.round((correctCount / 10) * 100)}%`;
@@ -135,6 +209,12 @@ prevBtn.addEventListener('click',() => {
 	}
 	allChoices.forEach((choice) => {
 		choice.checked = false;
+		const associatedLabel = choice.nextElementSibling;
+        if (associatedLabel) {
+			associatedLabel.style.borderColor = '';
+            associatedLabel.style.backgroundColor = '';
+        	associatedLabel.style.color = '';
+		};
 	});
 	renderQuizQuestions();
 });
@@ -146,6 +226,12 @@ nextBtn.addEventListener('click',() => {
 	}
 	allChoices.forEach((choice) => {
 		choice.checked = false;
+		const associatedLabel = choice.nextElementSibling;
+        if (associatedLabel) {
+			associatedLabel.style.borderColor = '';
+            associatedLabel.style.backgroundColor = '';
+        	associatedLabel.style.color = '';
+		};
 	});
 	renderQuizQuestions();
 });
@@ -155,7 +241,12 @@ moveToBtns.forEach((btn) => {
 		currentQuestionIndex = parseInt(btn.dataset.questionNo) - 1;
 		allChoices.forEach((choice) => {
 			choice.checked = false;
-		});
+        const associatedLabel = choice.nextElementSibling;
+        if (associatedLabel) {
+			associatedLabel.style.borderColor = '';
+            associatedLabel.style.backgroundColor = '';
+        	associatedLabel.style.color = '';
+		}});
 		renderQuizQuestions();
 	});
 });	
@@ -171,6 +262,7 @@ submitBtn.addEventListener('click',() => {
 });
 
 reviewBtn.addEventListener('click', () => {
+	currentQuestionIndex = 0
 	renderQuizReview();
 });
 
