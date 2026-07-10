@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,7 +8,7 @@
 	<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;margin:2rem}</style>
 </head>
 <body>
-    <div class="container">
+    <div class="container ">
 	<h1>Welcome To The Quiz App</h1>
 
 	<h3>Instructions:</h3>
@@ -18,6 +17,7 @@
 		<li>You will be presented with 10 questions.</li>
 		<li>You have 5 minutes to complete the quiz.</li>
 		<li>Click the "Submit" button when you are done.</li>
+		<li>The Quiz will automatically submit after the time is up.</li>
 		<li>Select a category from the dropdown menu to start the quiz.</li>
 		<li>Good luck!</li>
 	</ul>
@@ -31,7 +31,61 @@
 
 	<button id="start-btn" class="btn">Start Quiz</button>
     </div>
-	
+
+	<div class="quiz-container hidden">
+		<h1><span class="quiz-category">Javascript</span> Quiz Questions</h1>
+
+		<div class="question-display">
+
+			<h3><i>Question <span class="question-no">1</span> of 10</i></h3>
+
+			<p class="question">what does html stand for</p>
+			<input type="radio" id="choice-a" name="choice"></input>
+			<label for = "choice-a"></label>
+
+			<input type="radio" id="choice-b" name="choice"></input>
+			<label for = "choice-b"></label>
+
+			<input type="radio" id="choice-c" name="choice"></input>
+			<label for = "choice-c"></label>
+
+			<input type="radio" id="choice-d" name="choice"></input>
+			<label for = "choice-d"></label>
+		</div>
+
+		<div class="prev-next">
+			<button id="prev-btn" class="btn">Prev</button>
+			<button id="next-btn" class="btn">Next</button>
+		</div>
+
+		<div>
+			<button id="q-1" class="move-to-question-btn">1</button>
+			<button id="q-2" class="move-to-question-btn">2</button>
+			<button id="q-3" class="move-to-question-btn">3</button>
+			<button id="q-4" class="move-to-question-btn">4</button>
+			<button id="q-5" class="move-to-question-btn">5</button>
+			<button id="q-6" class="move-to-question-btn">6</button>
+			<button id="q-7" class="move-to-question-btn">7</button>
+			<button id="q-8" class="move-to-question-btn">8</button>
+			<button id="q-9" class="move-to-question-btn">9</button>
+			<button id="q-10" class="move-to-question-btn">10</button>
+		</div>
+
+		<button id="submit-btn" class="btn">Submit</button>
+	</div>
+
+	<div class="result-container hidden">
+		<h1><span class="quiz-category">Javascript</span> Quiz Complete!</h1>
+		<div class="result-ring" style="--percent: 0">
+			<span class="result-percent">0%</span>
+		</div>
+		<p class="result-score">You got 0 out of 10 correct</p>
+		<div class="prev-next">	
+			<button id="review-btn" class="btn">Review Answers</button>
+			<button id="finish-btn" class="btn">Finish Quiz</button>
+		</div>
+	</div>
+
     <script src="quizQuestions.js"></script>
     <script type = "module" src="WeeklyAssessment7.js"></script>
 </body>

@@ -29,6 +29,10 @@ body {
     flex-direction: column;
 }
 
+.hidden {
+	display: none;
+}
+
 /* Typography styling */
 h1 {
     color: #f4d35e; /* Light Yellow title */
@@ -102,4 +106,291 @@ select:focus {
 
 .btn:active {
     transform: scale(0.98); /* Slight click feedback compression */
+}
+
+/* =========================================
+   Quiz Question Card Container
+   ========================================= */
+.quiz-container {
+    background-color: #1b263b;
+    border: 2px solid #415a77;
+    border-radius: 12px;
+    max-width: 650px;
+    width: 100%;
+    padding: 2.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    text-align: center;
+}
+
+.quiz-category {
+    color: #f4d35e;
+}
+
+/* =========================================
+   Timer
+   Suggested markup: <div class="timer">00:00</div>
+   Add class "warning" via JS when time is running low,
+   e.g. timerEl.classList.add('warning')
+   ========================================= */
+.timer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+    width: fit-content;
+    margin: 0 auto 1.5rem;
+    padding: 0.5rem 1.25rem;
+    background-color: #0d1b2a;
+    border: 1px solid #415a77;
+    border-radius: 999px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #f4d35e;
+    font-variant-numeric: tabular-nums;
+}
+
+.timer.warning {
+    color: #ef476f;
+    border-color: #ef476f;
+    animation: timer-pulse 1s ease-in-out infinite;
+}
+
+@keyframes timer-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+}
+
+/* =========================================
+Redundant Progress Bar (not currently used)
+
+    Progress Bar
+   Suggested markup:
+   <div class="progress-track">
+     <div class="progress-fill" style="width:10%"></div>
+   </div>
+   Update .progress-fill's inline width via JS as the user
+   answers questions (e.g. answered/10 * 100%).
+   ========================================= 
+.progress-track {
+    width: 100%;
+    height: 10px;
+    background-color: #0d1b2a;
+    border: 1px solid #415a77;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background-color: #f4d35e;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+} */
+
+/* =========================================
+   Question Display
+   ========================================= */
+.question-display {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-bottom: 1.5rem;
+}
+
+.question-display h3 {
+    text-align: center;
+    color: #a2a8d3;
+    font-size: 1rem;
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 1.25rem;
+}
+
+.question {
+    color: #e0e1dd;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+
+/* Answer choices, styled as clickable cards */
+.question-display input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.question-display label {
+    display: block;
+    background-color: #0d1b2a;
+    border: 1px solid #415a77;
+    border-radius: 6px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 0.75rem;
+    color: #e0e1dd;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+}
+
+.question-display label:hover {
+    border-color: #f4d35e;
+}
+
+.question-display input[type="radio"]:checked + label {
+    border-color: #f4d35e;
+    background-color: rgba(244, 211, 94, 0.12);
+    color: #f4d35e;
+}
+
+.question-display input[type="radio"]:focus-visible + label {
+    outline: 2px solid #f4d35e;
+    outline-offset: 2px;
+}
+
+/* Prev / Next buttons sit side by side beneath the choices */
+.prev-next{
+    display: flex;
+    flex-direction: row;
+    margin: 0.5rem 0%;
+}
+#prev-btn,
+#next-btn, #review-btn, #finish-btn {
+    width: 48%;
+    display: inline-block;
+}
+
+#prev-btn, #review-btn {
+    margin-right: 4%;
+}
+
+/* =========================================
+   Question Navigator (1-10 jump buttons)
+   ========================================= */
+.move-to-question-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 42px;
+    height: 42px;
+    margin: 0.25rem;
+    background-color: #0d1b2a;
+    border: 1px solid #415a77;
+    border-radius: 6px;
+    color: #e0e1dd;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+}
+
+.move-to-question-btn:hover {
+    border-color: #f4d35e;
+}
+
+/* Toggle with JS: current question the user is viewing */
+.move-to-question-btn.active {
+    background-color: #f4d35e;
+    border-color: #f4d35e;
+    color: #0d1b2a;
+}
+
+/* Toggle with JS: questions the user has already answered */
+.move-to-question-btn.answered {
+    border-color: #4caf50;
+}
+
+#submit-btn {
+    margin-top: 1.5rem;
+}
+
+/* =========================================
+   Result Container
+   Suggested markup:
+   <div class="result-container hidden">
+     <h1><span class="quiz-category">Javascript</span> Quiz Complete!</h1>
+     <div class="result-ring" style="--percent: 80">
+       <span class="result-percent">80%</span>
+     </div>
+     <p class="result-score">You got 8 out of 10 correct</p>
+     <button id="retry-btn" class="btn">Try Again</button>
+   </div>
+   Set the --percent custom property via JS to (score/10*100)
+   before revealing the container (e.g. ringEl.style.setProperty
+   ('--percent', pct)) so the ring fills to match the score.
+   ========================================= */
+.result-container {
+    background-color: #1b263b;
+    border: 2px solid #415a77;
+    border-radius: 12px;
+    max-width: 650px;
+    width: 100%;
+    padding: 2.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    text-align: center;
+}
+ 
+.result-ring {
+    --percent: 0;
+    width: 160px;
+    height: 160px;
+    margin: 1.5rem auto;
+    border-radius: 50%;
+    background: conic-gradient(#f4d35e calc(var(--percent) * 1%), #0d1b2a 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: background 0.6s ease;
+}
+ 
+/* Punches out the center so only the ring itself reads as a bar */
+.result-ring::before {
+    content: "";
+    position: absolute;
+    inset: 12px;
+    background-color: #1b263b;
+    border-radius: 50%;
+}
+ 
+.result-percent {
+    position: relative;
+    z-index: 1;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #f4d35e;
+}
+ 
+.result-score {
+    color: #a2a8d3;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* =========================================
+   Responsive tweaks
+   ========================================= */
+@media (max-width: 480px) {
+    .quiz-container {
+        padding: 1.5rem;
+    }
+
+    .move-to-question-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    #prev-btn,
+    #next-btn {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .result-ring {
+    width: 130px;
+    height: 130px;
+    }
 }
