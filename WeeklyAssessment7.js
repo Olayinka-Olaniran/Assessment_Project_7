@@ -30,6 +30,8 @@ const dialogConfirmBtn = document.getElementById('dialog-confirm-btn');
 const dialogCancelBtn = document.getElementById('dialog-cancel-btn');
 const alertDialog = document.getElementById('alert-dialog');
 const alertCloseX = document.getElementById('alert-close-x');
+const alertCloseBtn = document.getElementById('alert-close-btn');
+const timer = document.querySelector('.timer')
 
 let currentQuestionIndex = 0;
 
@@ -40,6 +42,12 @@ function renderQuizQuestions(){
     alertDialog.showModal();
     return;
 	}
+	if (!chosenAnswers[2]) {
+        quizTimer();
+    } else {
+        // Optional: If you want the timer UI element to show "00:00" or be hidden during review
+        timer.textContent = "00:00"; 
+    }
 	startPage.classList.add('hidden');
 	quizPage.classList.remove('hidden');
 	questionText.textContent = QuizQuestions[selectedCategory][currentQuestionIndex].question;
@@ -153,22 +161,80 @@ if(chosenAnswers[2]){
 }
 }
 
+function quizTimer(){
+    const chosenAnswers = getChosenAnswers()
+    let quizEndTime;
+    if(chosenAnswers[3]){
+        quizEndTime = chosenAnswers[3]
+    }else{
+        quizEndTime = Date.now() + 300000
+        chosenAnswers[3] = quizEndTime
+        localStorage.setItem("chosenAnswers", JSON.stringify(chosenAnswers));
+    }
+    
+    // Clear any existing window tracker to prevent stacking
+    if (window.timeDisplayInterval) {
+        clearInterval(window.timeDisplayInterval);
+    }
+
+    // 1. Group the tick logic into a single nested function
+    function tick() {
+        const timeLeft = quizEndTime - Date.now()
+
+        // 2. MOVED INSIDE: This now catches the expiration on every single second tick
+        if (timeLeft <= 0) {
+            clearInterval(window.timeDisplayInterval);
+            window.timeDisplayInterval = null;
+            timer.textContent = "00:00"; // Lock display cleanly at zero
+            renderQuizResults(); 
+            return;
+        }
+
+        const timeObject = new Date(timeLeft);
+        const minutes = timeObject.getUTCMinutes().toString().padStart(2, '0');
+        const seconds = timeObject.getUTCSeconds().toString().padStart(2, '0');
+        
+        timer.textContent = `${minutes}:${seconds}`
+    }
+
+    // 3. RUN IMMEDIATELY: Fixes the 1-second default text flash on refresh
+    tick();
+
+    // 4. START THE LOOP
+    window.timeDisplayInterval = setInterval(tick, 1000)
+}
+
 function getChosenAnswers(){
 	  try{
-    let chosenAnswers = JSON.parse(localStorage.getItem("chosenAnswers")) || [];
-    let validArr = false;
-    chosenAnswers[1].forEach((answer)=>{
-    if (answer.id && answer.answer) {
-      validArr = true;
-    }
-  });
-  
-	if(chosenAnswers[2]){
-		 return validArr ? chosenAnswers : [quizCategory.options[quizCategory.selectedIndex].value, [], true];
+    let chosenAnswers = JSON.parse(localStorage.getItem("chosenAnswers"));
+
+	if(!chosenAnswers){
+		chosenAnswers = [quizCategory.options[quizCategory.selectedIndex].value, [], null, null]
 	}
-  return validArr ? chosenAnswers : [quizCategory.options[quizCategory.selectedIndex].value, []];
-  }catch(error){return [quizCategory.options[quizCategory.selectedIndex].value, []]}
-}
+
+    let validArr = false;
+	if(Array.isArray(chosenAnswers[1])){
+		if(chosenAnswers[1].length == 0){
+			validArr = true;
+		}else{
+			validArr = chosenAnswers[1].every(answer => answer && answer.id && answer.answer);
+		}
+	}
+
+	if (!validArr) {
+            const currentCat = chosenAnswers[0] || quizCategory.options[quizCategory.selectedIndex].value;
+            const timerVal = chosenAnswers[2] !== undefined ? chosenAnswers[2] : null;
+            const submitVal = chosenAnswers[3] !== undefined ? chosenAnswers[3] : null;
+            
+            return [currentCat, [], timerVal, submitVal];
+        }
+
+        return chosenAnswers;
+
+  }catch(error){
+    console.error("Storage parse failure:", error);
+    return [quizCategory.options[quizCategory.selectedIndex].value, [], null, null];
+}}
 
 function storeChosenAnswers(e){
 	const chosenAnswers = getChosenAnswers();
@@ -278,6 +344,9 @@ submitBtn.addEventListener('click',() => {
 
 // Follow-up Action: User confirms submission
 dialogConfirmBtn.addEventListener('click', () => {
+	clearInterval(window.timeDisplayInterval);
+	window.timeDisplayInterval = null;
+	timer.textContent = "00:00";
     confirmDialog.close();
     renderQuizResults(); // Executes your calculations dashboard view
 });
@@ -301,8 +370,11 @@ finishBtns.forEach((finishBtn)=>finishBtn.addEventListener('click', () => {
 	location.reload();
 }));
 
-// Click the X button to close the modal window
+// Click the X or Got It! button to close the modal window
 alertCloseX.addEventListener('click', () => {
+    alertDialog.close();
+});
+alertCloseBtn.addEventListener('click', () => {
     alertDialog.close();
 });
 
@@ -336,7 +408,11 @@ document.addEventListener('DOMContentLoaded', () => {
 	const chosenAnswers = getChosenAnswers();
 	if (chosenAnswers[0] !== 'none' && !chosenAnswers[2]) {
 		renderQuizQuestions();
+	}else if(chosenAnswers[3] && !chosenAnswers[2]){
+		renderQuizQuestions();
 	}else if (chosenAnswers[0] !== 'none' && chosenAnswers[2]) {
 		renderQuizReview();
+	}else if(chosenAnswers[3]){
+		renderQuizQuestions();
 	}
 });

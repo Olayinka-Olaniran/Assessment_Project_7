@@ -112,6 +112,7 @@ select:focus {
    Quiz Question Card Container
    ========================================= */
 .quiz-container {
+    position: relative;
     background-color: #1b263b;
     border: 2px solid #415a77;
     border-radius: 12px;
@@ -134,15 +135,17 @@ select:focus {
    ========================================= */
 .timer {
     display: flex;
+    position: absolute;
+    right: 0.5%;
+    top: 0.5%;
     justify-content: center;
-    align-items: center;
     gap: 0.4rem;
     width: fit-content;
-    margin: 0 auto 1.5rem;
+    margin: 0;
     padding: 0.5rem 1.25rem;
     background-color: #0d1b2a;
     border: 1px solid #415a77;
-    border-radius: 999px;
+    border-radius: 0.5rem;
     font-size: 1.15rem;
     font-weight: 700;
     letter-spacing: 0.5px;
@@ -311,22 +314,89 @@ Redundant Progress Bar (not currently used)
     margin-top: 1.5rem;
 }
 
-/* The dialog window box */
-dialog#submit-confirm-dialog {
-    background-color: #1b263b; /* Match your inner card deep blue */
-    border: 2px solid #f4d35e; /* Yellow accent frame line */
-    border-radius: 8px;
+/* =========================================
+   Native HTML Dialog Modal Styles
+   ========================================= */
+
+/* The Modal Container Box */
+#submit-confirm-dialog {
+    background-color: #0d1b2a;
+    border: 2px solid #f4d35e;
+    border-radius: 12px;
     padding: 2rem;
-    margin: auto; /* Centers it perfectly on viewports */
-    color: #e0e1dd;
+    max-width: 400px;
+    width: 90%;
+    color: #ffffff;
     text-align: center;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    
+    /* Native centering overrides */
+    margin: auto; 
 }
 
-/* Modifies the background dark shade overlay behind the popup box */
-dialog#submit-confirm-dialog::backdrop {
-    background-color: rgba(13, 27, 42, 0.75); /* Dark screen dimming effect */
+/* The Modal Question Text */
+#submit-confirm-dialog p {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    line-height: 1.4;
 }
+
+/* The Button Alignment Row */
+#submit-confirm-dialog .nav-btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+/* Base Modal Button Setup */
+#submit-confirm-dialog .btn {
+    padding: 0.75rem 1.5rem;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+    border-radius: 8px; /* Match the corner radius of your main app buttons */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    text-transform: uppercase;
+}
+
+/* Primary Action Button (Submit) */
+#dialog-confirm-btn {
+    background-color: #f4d35e;
+    color: #0d1b2a;
+}
+
+#dialog-confirm-btn:hover {
+    background-color: #e5c344;
+}
+
+/* Secondary Action Button (Cancel) */
+#dialog-cancel-btn {
+    background-color: transparent;
+    border: 1px solid #415a77 !important; /* Forces layout borders to match your quiz card style */
+    color: #f4d35e;
+}
+
+#dialog-confirm-btn:hover {
+    background-color: #ffd875; /* A slightly brighter yellow highlight */
+    transform: translateY(-1px);
+}
+
+#dialog-cancel-btn:hover {
+    background-color: rgba(65, 90, 119, 0.15); /* Soft background fill tint */
+    border-color: #f4d35e !important; /* Brightens up the boundary on active hover */
+    transform: translateY(-1px);
+}
+
+/* Modern, Clean Full-Screen Backdrop Overlay */
+#submit-confirm-dialog::backdrop {
+    background-color: rgba(13, 27, 42, 0.75);
+    backdrop-filter: blur(4px); /* Gently blurs the background content out of focus */
+}
+
 
 /* =========================================
    Result Container
@@ -390,54 +460,87 @@ dialog#submit-confirm-dialog::backdrop {
     font-size: 1.1rem;
     margin-bottom: 1.5rem;
 }
+/* =========================================
+   Category Alert Dialog Styles
+   ========================================= */
 
-/* 1. Add positioning context to your dialog containers */
-dialog#alert-dialog {
-    position: relative; /* Essential: creates a boundary box for absolute items */
-    background-color: #1b263b;
+#alert-dialog {
+    background-color: #0d1b2a;
     border: 2px solid #f4d35e;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin: auto;
-    color: #e0e1dd;
-    min-width: 320px;
+    border-radius: 12px;
+    padding: 1rem 1.5rem 2rem 1.5rem; /* Lower padding-top to account for header height */
+    max-width: 400px;
+    width: 90%;
+    color: #ffffff;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    margin: auto;
 }
 
-/* 2. Absolute positioning box */
-dialog#alert-dialog .dialog-header {
-    position: absolute;
-    top: 3px;    /* Pinned exactly 3px from the top edge */
-    right: 3px;  /* Pinned exactly 3px from the right edge */
-    margin: 0;
-    padding: 0;
+/* Header row pushes the 'X' button completely to the right edge */
+.dialog-header {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-bottom: 0.5rem;
 }
 
-/* 3. The Close Icon Styling */
-dialog#alert-dialog .close-x-btn {
-    background: transparent;
+/* Big, tap-friendly invisible block area for the close sign */
+.close-x-btn {
+    background: none;
     border: none;
-    color: #a2a8d3;
-    font-size: 1.5rem; /* Slightly reduced to look balanced in a tight corner */
+    color: #415a77;
+    font-size: 1.75rem; /* Large enough to click easily */
     line-height: 1;
     cursor: pointer;
-    padding: 2px 6px; /* Provides a clean, clickable target zone */
-    transition: color 0.2s;
+    padding: 0.25rem 0.5rem;
+    transition: color 0.2s ease;
 }
 
-dialog#alert-dialog .close-x-btn:hover {
-    color: #f4d35e;
+.close-x-btn:hover {
+    color: #ef476f; /* Changes color to alert orange/red on hover */
 }
 
-dialog#alert-dialog::backdrop {
-    background-color: rgba(13, 27, 42, 0.75);
-}
-
+/* Centers content body vertically and horizontally */
 .dialog-body {
     text-align: center;
-    padding-bottom: 1rem;
-    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
 }
+
+.dialog-body p {
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Pushes the primary button down and centers it inside the layout block */
+#alert-close-btn {
+    display: block;
+    margin: 0 auto;
+    padding: 0.65rem 2.25rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    background-color: transparent;
+    border: 1px solid #415a77;
+    border-radius: 8px;
+    color: #f4d35e;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#alert-close-btn:hover {
+    background-color: rgba(65, 90, 119, 0.2);
+    border-color: #f4d35e;
+}
+
+/* Native backdrop overlay blur pattern */
+#alert-dialog::backdrop {
+    background-color: rgba(13, 27, 42, 0.75);
+    backdrop-filter: blur(4px);
+}
+
 
 /* =========================================
    Responsive tweaks
