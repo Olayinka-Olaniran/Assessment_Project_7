@@ -1,8 +1,11 @@
-/* Core Page Reset */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+html, body {
+    overflow-x: hidden;
 }
 
 body {
@@ -23,7 +26,8 @@ body {
     border-radius: 12px;
     max-width: 550px;
     width: 100%;
-    padding: 2.5rem;
+    min-width: 0;
+    padding: clamp(1.25rem, 5vw, 2.5rem);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
     display: flex;
     flex-direction: column;
@@ -36,7 +40,7 @@ body {
 /* Typography styling */
 h1 {
     color: #f4d35e; /* Light Yellow title */
-    font-size: 1.85rem;
+    font-size: clamp(1.15rem, 5vw, 1.85rem);
     text-align: center;
     margin-bottom: 1.5rem;
     text-transform: uppercase;
@@ -45,7 +49,7 @@ h1 {
 
 h3 {
     color: #e0e1dd;
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
     margin-bottom: 0.75rem;
     border-bottom: 1px solid #415a77;
     padding-bottom: 0.5rem;
@@ -58,7 +62,7 @@ ul {
 
 li {
     color: #a2a8d3; /* Soft bluish-gray for muted instruction text */
-    font-size: 0.95rem;
+    font-size: clamp(0.85rem, 2.5vw, 0.95rem);
     margin-bottom: 0.6rem;
     line-height: 1.4;
 }
@@ -68,12 +72,12 @@ select {
     width: 85%; /* Sits nicely in the middle */
     align-self: center; /* Centers the element within the card flex direction */
 	text-align: center; /* Centers the text inside the dropdown */
-    padding: 0.75rem 1rem;
+    padding: clamp(0.6rem, 2.5vw, 0.75rem) 1rem;
     background-color: #0d1b2a;
     border: 1px solid #415a77;
     border-radius: 6px;
     color: #ffffff;
-    font-size: 1rem;
+    font-size: clamp(0.9rem, 3vw, 1rem);
     cursor: pointer;
     margin-bottom: 2.5rem; /* Pushes the button cleanly to the bottom */
     outline: none;
@@ -87,12 +91,12 @@ select:focus {
 /* Bottom Action Button Styling */
 .btn {
     width: 100%;
-    padding: 0.85rem;
+    padding: clamp(0.65rem, 2.5vw, 0.85rem);
     background-color: #f4d35e; /* High contrast Light Yellow primary color */
     color: #0d1b2a; /* Deep blue text for legibility */
     border: none;
     border-radius: 6px;
-    font-size: 1.1rem;
+    font-size: clamp(0.9rem, 3.5vw, 1.1rem);
     font-weight: 700;
     cursor: pointer;
     text-transform: uppercase;
@@ -118,7 +122,8 @@ select:focus {
     border-radius: 12px;
     max-width: 650px;
     width: 100%;
-    padding: 2.5rem;
+    min-width: 0;
+    padding: clamp(1.25rem, 5vw, 2.5rem);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
     text-align: center;
 }
@@ -142,11 +147,11 @@ select:focus {
     gap: 0.4rem;
     width: fit-content;
     margin: 0;
-    padding: 0.5rem 1.25rem;
+    padding: clamp(0.4rem, 1.5vw, 0.5rem) clamp(0.8rem, 3vw, 1.25rem);
     background-color: #0d1b2a;
     border: 1px solid #415a77;
     border-radius: 0.5rem;
-    font-size: 1.15rem;
+    font-size: clamp(0.85rem, 3vw, 1.15rem);
     font-weight: 700;
     letter-spacing: 0.5px;
     color: #f4d35e;
@@ -206,7 +211,7 @@ Redundant Progress Bar (not currently used)
 .question-display h3 {
     text-align: center;
     color: #a2a8d3;
-    font-size: 1rem;
+    font-size: clamp(0.85rem, 2.8vw, 1rem);
     border-bottom: none;
     padding-bottom: 0;
     margin-bottom: 1.25rem;
@@ -214,7 +219,7 @@ Redundant Progress Bar (not currently used)
 
 .question {
     color: #e0e1dd;
-    font-size: 1.25rem;
+    font-size: clamp(1rem, 3.5vw, 1.25rem);
     line-height: 1.5;
     margin-bottom: 1.5rem;
 }
@@ -232,10 +237,11 @@ Redundant Progress Bar (not currently used)
     background-color: #0d1b2a;
     border: 1px solid #415a77;
     border-radius: 6px;
-    padding: 0.85rem 1rem;
+    padding: clamp(0.6rem, 2.5vw, 0.85rem) clamp(0.7rem, 3vw, 1rem);
     margin-bottom: 0.75rem;
     color: #e0e1dd;
     cursor: pointer;
+    font-size: clamp(0.85rem, 3vw, 1rem);
     transition: border-color 0.2s, background-color 0.2s, color 0.2s;
 }
 
@@ -277,14 +283,14 @@ Redundant Progress Bar (not currently used)
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 42px;
-    height: 42px;
+    width: clamp(32px, 9vw, 42px);
+    height: clamp(32px, 9vw, 42px);
     margin: 0.25rem;
     background-color: #0d1b2a;
     border: 1px solid #415a77;
     border-radius: 6px;
     color: #e0e1dd;
-    font-size: 0.95rem;
+    font-size: clamp(0.8rem, 2.5vw, 0.95rem);
     font-weight: 600;
     cursor: pointer;
     transition: border-color 0.2s, background-color 0.2s, color 0.2s;
@@ -429,15 +435,16 @@ Redundant Progress Bar (not currently used)
     border-radius: 12px;
     max-width: 650px;
     width: 100%;
-    padding: 2.5rem;
+    min-width: 0;
+    padding: clamp(1.25rem, 5vw, 2.5rem);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
     text-align: center;
 }
  
 .result-ring {
     --percent: 0;
-    width: 160px;
-    height: 160px;
+    width: clamp(110px, 30vw, 160px);
+    height: clamp(110px, 30vw, 160px);
     margin: 1.5rem auto;
     border-radius: 50%;
     background: conic-gradient(#f4d35e calc(var(--percent) * 1%), #0d1b2a 0);
@@ -460,7 +467,7 @@ Redundant Progress Bar (not currently used)
 .result-percent {
     position: relative;
     z-index: 1;
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 6vw, 2rem);
     font-weight: 700;
     color: #f4d35e;
 }
@@ -554,25 +561,15 @@ Redundant Progress Bar (not currently used)
 
 /* =========================================
    Responsive tweaks
+   (only the prev/next stacking is a true layout
+   switch — everything else now scales fluidly
+   via clamp() above, so it no longer needs a
+   breakpoint override)
    ========================================= */
 @media (max-width: 480px) {
-    .quiz-container {
-        padding: 1.5rem;
-    }
-
-    .move-to-question-btn {
-        width: 36px;
-        height: 36px;
-    }
-
     #prev-btn,
     #next-btn {
         width: 100%;
         margin-right: 0;
-    }
-
-    .result-ring {
-    width: 130px;
-    height: 130px;
     }
 }
