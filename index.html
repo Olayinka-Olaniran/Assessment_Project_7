@@ -14,8 +14,8 @@
 	<h3>Instructions:</h3>
 
 	<ul>
-		<li>You will be presented with 10 questions.</li>
-		<li>You have 5 minutes to complete the quiz.</li>
+		<li>You will be presented with <span class="total-no-of-questions"></span> questions.</li>
+		<li>You have <span class="alloted-time"></span> to complete the quiz.</li>
 		<li>Click the "Submit" button when you are done.</li>
 		<li>The Quiz will automatically submit after the time is up.</li>
 		<li>Select a category from the dropdown menu to start the quiz.</li>
@@ -24,9 +24,6 @@
 
 	<select id="category">
 		<option value="none">-- Select a category --</option>
-		<option value="html">HTML</option>
-		<option value="css">CSS</option>
-		<option value="javascript">JavaScript</option>
 	</select>
 
 	<button id="start-btn" class="btn">Start Quiz</button>
@@ -38,20 +35,20 @@
         <button id="alert-close-x" class="close-x-btn">&times;</button>
     </div>
     <div class="dialog-body">
-        <p>Please select a category to start the quiz!</p>
+        <p></p>
     </div>
         <button id="alert-close-btn" class="btn">Got It</button>
 </dialog>
 
 	<div class="quiz-container hidden">
 
-		<div class="timer">5:00</div>
+		<div class="timer"><span class="alloted-timer"></span></div>
 
 		<h1 ><span class="quiz-category"></span> Quiz Questions</h1>
 
 		<div class="question-display">
 
-			<h3><i>Question <span class="question-no"></span> of 10</i></h3>
+			<h3><i>Question <span class="question-no"></span> of <span class="total-no-of-questions"></span></i></h3>
 
 			<p class="question"></p>
 			<input type="radio" id="choice-a" name="choice" value="a"/>
@@ -72,17 +69,7 @@
 			<button id="next-btn" class="btn">Next</button>
 		</div>
 
-		<div>
-			<button id="q-1" data-question-no="1" class="move-to-question-btn">1</button>
-			<button id="q-2" data-question-no="2" class="move-to-question-btn">2</button>
-			<button id="q-3" data-question-no="3" class="move-to-question-btn">3</button>
-			<button id="q-4" data-question-no="4" class="move-to-question-btn">4</button>
-			<button id="q-5" data-question-no="5" class="move-to-question-btn">5</button>
-			<button id="q-6" data-question-no="6" class="move-to-question-btn">6</button>
-			<button id="q-7" data-question-no="7" class="move-to-question-btn">7</button>
-			<button id="q-8" data-question-no="8" class="move-to-question-btn">8</button>
-			<button id="q-9" data-question-no="9" class="move-to-question-btn">9</button>
-			<button id="q-10" data-question-no="10" class="move-to-question-btn">10</button>
+		<div id = "move-to-question-btns-wrap">
 		</div>
 
 		<button id="submit-btn" class="btn">Submit</button>
@@ -105,7 +92,7 @@
 		<div class="result-ring" style="--percent: 0">
 			<span class="result-percent"></span>
 		</div>
-		<p class="result-score">You got <span class="correct-count"></span> out of 10 correct</p>
+		<p class="result-score">You got <span class="correct-count"></span> out of <span class="total-no-of-questions"></span> correct</p>
 		<div class="prev-next">	
 			<button id="review-btn" class="btn">Review Answers</button>
 			<button class="finish-btn btn">Finish Quiz</button>

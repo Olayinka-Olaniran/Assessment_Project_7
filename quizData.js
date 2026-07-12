@@ -1,5 +1,13 @@
- const QuizQuestions = {
-	html: [
+ const QuizData = {
+
+	categories: ['html', 'css', 'javascript'],
+
+	html: {
+		label: 'HTML',
+		
+		timerInMs: 300000,
+
+		questions: [
 		{
 			id: 1,
 			question: "What does HTML stand for?",
@@ -121,9 +129,13 @@
 			incorrectMsg: "Incorrect X: The full terms 'navigate' and 'navbar' are developer slang terms, not valid elements."
 		}
 	],
-    htmlAnswers: ["a", "b", "c", "a", "b", "d", "c", "b", "a", "b"],
+    answers: ["a", "b", "c", "a", "b", "d", "c", "b", "a", "b"],
+},
 
-	css: [
+	css: {
+		label: 'CSS',
+		timerInMs: 600000,
+		questions: [
 		{
 				id: 1,
 				question: "What does CSS stand for?",
@@ -246,9 +258,13 @@
 			}
 	],
 
-    cssAnswers: ["c", "b", "c", "b", "d", "b", "a", "d", "c", "a"],
+    answers: ["c", "b", "c", "b", "d", "b", "a", "d", "c", "a"],
+	},
 
-	javascript: [
+	javascript: {
+		label: 'Javascript',
+		timerInMs: 900000,
+		questions: [
 		{
 			id: 1,
 			question: "Inside which HTML element do we put the JavaScript?",
@@ -368,10 +384,10 @@
 			},
 			correctMsg: "Correct ✓: The 'onclick' event attribute captures pointing device activation interactions on DOM nodes.",
 			incorrectMsg: "Incorrect X: Do not confuse standard interaction events with custom mouse variations like 'onmouseclick'."
-		}
+		}, 
 	],
 
-    javascriptAnswers: ["c", "d", "a", "b", "c", "a", "b", "c", "a", "c"],
-}
+    answers: ["c", "d", "a", "b", "c", "a", "b", "c", "a", "c"]
+}}
 
-export { QuizQuestions };
+export { QuizData };

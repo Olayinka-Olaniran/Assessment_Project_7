@@ -1,4 +1,4 @@
-import { QuizQuestions } from './quizQuestions.js';
+import { QuizData } from './quizData.js';
 
 const startPage = document.querySelector('.container');
 const quizPage = document.querySelector('.quiz-container');
@@ -6,6 +6,9 @@ const resultPage = document.querySelector('.result-container');
 const quizCategory = document.querySelector('#category');
 const questionDisplay = document.querySelector('.question-display');
 const questionCategory = document.querySelector('.quiz-category');
+const allotedTimeDisplay = document.querySelector('.alloted-time');
+const allotedTimerDisplay = document.querySelector('.alloted-timer');
+const totalQuestionsDisplays = document.querySelectorAll('.total-no-of-questions');
 const questionNo = document.querySelector('.question-no');
 const questionText = document.querySelector('.question');
 const choiceA = document.querySelector('label[for="choice-a"]');
@@ -18,7 +21,7 @@ const correctAnswerCount = document.querySelector('.correct-count');
 const startBtn = document.querySelector('#start-btn');
 const prevBtn = document.querySelector('#prev-btn');
 const nextBtn = document.querySelector('#next-btn');
-const moveToBtns = document.querySelectorAll('.move-to-question-btn');
+const moveToWrapper = document.querySelector('#move-to-question-btns-wrap');
 const submitBtn = document.querySelector('#submit-btn');
 const navBtns = document.querySelector('.nav-btns');
 const resultBtn = document.querySelector('#result-btn');
@@ -29,19 +32,86 @@ const confirmDialog = document.getElementById('submit-confirm-dialog');
 const dialogConfirmBtn = document.getElementById('dialog-confirm-btn');
 const dialogCancelBtn = document.getElementById('dialog-cancel-btn');
 const alertDialog = document.getElementById('alert-dialog');
+const dialogP = document.querySelector('.dialog-body p')
 const alertCloseX = document.getElementById('alert-close-x');
 const alertCloseBtn = document.getElementById('alert-close-btn');
 const timer = document.querySelector('.timer')
 
 let currentQuestionIndex = 0;
 
+function getQuestionCount() {
+    const chosenAnswers = getChosenAnswers();
+    return QuizData[chosenAnswers[0]]?.questions?.length ?? 0;
+}
+
+let moveToBtns = document.querySelectorAll('.move-to-question-btn'); // empty NodeList until generated
+
+function generateMoveToButtons(count) {
+    if (moveToWrapper.children.length === count) return; // already built for this category, skip
+    moveToWrapper.innerHTML = '';
+    for (let i = 1; i <= count; i++) {
+        const btn = document.createElement('button');
+        btn.id = `q-${i}`;
+        btn.dataset.questionNo = i;
+        btn.className = 'move-to-question-btn';
+        btn.textContent = i;
+        moveToWrapper.appendChild(btn);
+    }
+    moveToBtns = document.querySelectorAll('.move-to-question-btn');
+    attachMoveToListeners();
+}
+
+function attachMoveToListeners() {
+    moveToBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            currentQuestionIndex = parseInt(btn.dataset.questionNo) - 1;
+            allChoices.forEach((choice) => {
+                choice.checked = false;
+                const associatedLabel = choice.nextElementSibling;
+                if (associatedLabel) {
+                    associatedLabel.style.borderColor = '';
+                    associatedLabel.style.backgroundColor = '';
+                    associatedLabel.style.color = '';
+                }
+            });
+            renderQuizQuestions();
+        });
+    });
+}
+
+function updateTotalQuestionsDisplay() {
+	const chosenAnswers = getChosenAnswers();
+    const category = chosenAnswers[0]
+    const count = (category !== 'none' && QuizData[category]) ? (QuizData[category].questions?.length ?? '--') : '--';
+    totalQuestionsDisplays.forEach((el) => {
+        el.textContent = count;
+    });
+}
+
+function populateCategoryDropdown() {
+    (QuizData.categories ?? []).forEach((key) => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = QuizData[key]?.label ?? key;
+        quizCategory.appendChild(option);
+    });
+}
+
 function renderQuizQuestions(){
 	const chosenAnswers = getChosenAnswers();
 	const selectedCategory = chosenAnswers[0];
 	if(selectedCategory === 'none'){
+	dialogP.textContent = 'Please select a category to start the quiz!'
     alertDialog.showModal();
     return;
 	}
+	if(!QuizData[selectedCategory]){
+	dialogP.textContent = 'Please select a valid category to start the quiz!'
+    alertDialog.showModal();
+	return;
+	}
+    updateTotalQuestionsDisplay();
+	generateMoveToButtons(QuizData[selectedCategory]?.questions?.length ?? 0);
 	if (!chosenAnswers[2]) {
         quizTimer();
     } else {
@@ -50,13 +120,23 @@ function renderQuizQuestions(){
     }
 	startPage.classList.add('hidden');
 	quizPage.classList.remove('hidden');
-	questionText.textContent = QuizQuestions[selectedCategory][currentQuestionIndex].question;
-	questionNo.textContent = QuizQuestions[selectedCategory][currentQuestionIndex].id;
+
+	const currentQ = QuizData[selectedCategory]?.questions?.[currentQuestionIndex];
+
+	if (!currentQ) {
+		questionText.textContent = 'This question is unavailable.';
+		questionNo.textContent = currentQuestionIndex + 1;
+		choiceA.textContent = choiceB.textContent = choiceC.textContent = choiceD.textContent = '';
+		return;
+	}
+
+	questionText.textContent = currentQ?.question ?? 'This question is unavailable.';
+	questionNo.textContent = currentQ?.id ?? currentQuestionIndex + 1;;
 	questionCategory.textContent = selectedCategory;
-	choiceA.textContent = QuizQuestions[selectedCategory][currentQuestionIndex].options.a;
-	choiceB.textContent = QuizQuestions[selectedCategory][currentQuestionIndex].options.b;
-	choiceC.textContent = QuizQuestions[selectedCategory][currentQuestionIndex].options.c;
-	choiceD.textContent = QuizQuestions[selectedCategory][currentQuestionIndex].options.d;
+	choiceA.textContent = currentQ?.options?.a ?? '';
+	choiceB.textContent = currentQ?.options?.b ?? '';
+	choiceC.textContent = currentQ?.options?.c ?? '';
+	choiceD.textContent = currentQ?.options?.d ?? '';
 
 	const allRadioInputs = document.querySelectorAll('input[type="radio"]');
     allRadioInputs.forEach(input => {
@@ -83,7 +163,7 @@ function renderQuizQuestions(){
 
 	if(chosenAnswers[2]){
 		
-		const correctAnswers = QuizQuestions[`${chosenAnswers[0]}Answers`];
+		const correctAnswers = QuizData[chosenAnswers[0]]?.answers ?? [];
 if (chosenAnswers[2]) {
     moveToBtns.forEach((btn) => {
         const qNo = parseInt(btn.dataset.questionNo);
@@ -107,7 +187,7 @@ if(chosenAnswers[2]){
 	let selectedChoice;
 	let associatedLabel;
 	let correctInputChoiceLabel;
-	const correctAnswers = QuizQuestions[`${chosenAnswers[0]}Answers`];
+	const correctAnswers = QuizData[chosenAnswers[0]]?.answers ?? [];
 	
 	selectedAnswer = chosenAnswers[1].find((answer) => answer.id === currentQuestionIndex + 1)
 	
@@ -122,14 +202,14 @@ if(chosenAnswers[2]){
     correctMsgElement.style.marginTop = '0.5rem';
     correctMsgElement.style.fontSize = '0.85rem';
     correctMsgElement.style.fontWeight = 'normal';
-    correctMsgElement.textContent = QuizQuestions[chosenAnswers[0]][currentQuestionIndex].correctMsg;
+    correctMsgElement.textContent = QuizData[chosenAnswers[0]]?.questions?.[currentQuestionIndex]?.correctMsg ?? 'Correct!';
 
 	const wrongMsgElement = document.createElement('div');
     wrongMsgElement.className = 'review-wrong-msg-text';
     wrongMsgElement.style.marginTop = '0.5rem';
     wrongMsgElement.style.fontSize = '0.85rem';
     wrongMsgElement.style.fontWeight = 'normal';
-    wrongMsgElement.textContent = QuizQuestions[chosenAnswers[0]][currentQuestionIndex].incorrectMsg;
+    wrongMsgElement.textContent = QuizData[chosenAnswers[0]]?.questions?.[currentQuestionIndex]?.incorrectMsg ?? 'Incorrect!';
 
     
 
@@ -171,13 +251,37 @@ if(chosenAnswers[2]){
 }
 }
 
+function updateAllotedTimeDisplay() {
+    const category = quizCategory.options[quizCategory.selectedIndex].value;
+	if(category==='none'){
+		allotedTimeDisplay.textContent = `-- minutes`;
+		return
+	}
+    const ms = QuizData[category]?.timerInMs ?? 300000;
+    const totalSeconds = Math.round(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    let display;
+    if (seconds === 0) {
+        display = `${minutes} minute${minutes === 1 ? '' : 's'}`;
+		
+    } else {
+        display = `${minutes}m ${seconds}s`;
+    }
+
+    allotedTimeDisplay.textContent = display;
+	allotedTimerDisplay.textContent =`${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+}
+
 function quizTimer(){
     const chosenAnswers = getChosenAnswers()
     let quizEndTime;
     if(chosenAnswers[3]){
         quizEndTime = chosenAnswers[3]
     }else{
-        quizEndTime = Date.now() + 300000
+		const quizTimeLimit = QuizData[chosenAnswers[0]]?.timerInMs || 300000
+        quizEndTime = Date.now() + Number(quizTimeLimit)
         chosenAnswers[3] = quizEndTime
         localStorage.setItem("chosenAnswers", JSON.stringify(chosenAnswers));
     }
@@ -267,14 +371,16 @@ function storeChosenAnswers(e){
 function renderQuizResults(){
 	const chosenAnswers = getChosenAnswers();
 	chosenAnswers[2] = true;
-	const correctAnswers = QuizQuestions[`${chosenAnswers[0]}Answers`];
+	const correctAnswers = QuizData[chosenAnswers[0]]?.answers ?? [];
 	const correctCount = chosenAnswers[1].filter((answer) => {
 		answer.answer == correctAnswers[answer.id - 1];
 		return answer.answer == correctAnswers[answer.id - 1];
 	}).length;
-	resultPercent.textContent = `${Math.round((correctCount / 10) * 100)}%`;
+	
+	const questionCount = getQuestionCount() || 1;
+	resultPercent.textContent = `${Math.round((correctCount / questionCount) * 100)}%`;
 	correctAnswerCount.textContent = correctCount;
-	resultRing.style.setProperty('--percent', Math.round((correctCount / 10) * 100));
+	resultRing.style.setProperty('--percent', Math.round((correctCount / questionCount) * 100));
 	resultPage.classList.remove('hidden');
 	quizPage.classList.add('hidden');
 	localStorage.setItem("chosenAnswers", JSON.stringify(chosenAnswers));
@@ -317,8 +423,9 @@ prevBtn.addEventListener('click',() => {
 
 nextBtn.addEventListener('click',() => {
 	currentQuestionIndex++;
-	if(currentQuestionIndex > 9){
-		currentQuestionIndex = 9;
+	const maxIndex = Math.max(getQuestionCount() - 1, 0);
+	if(currentQuestionIndex > maxIndex){
+		currentQuestionIndex = maxIndex;
 	}
 	allChoices.forEach((choice) => {
 		choice.checked = false;
@@ -331,21 +438,6 @@ nextBtn.addEventListener('click',() => {
 	});
 	renderQuizQuestions();
 });
-
-moveToBtns.forEach((btn) => {
-	btn.addEventListener('click',() => {
-		currentQuestionIndex = parseInt(btn.dataset.questionNo) - 1;
-		allChoices.forEach((choice) => {
-			choice.checked = false;
-        const associatedLabel = choice.nextElementSibling;
-        if (associatedLabel) {
-			associatedLabel.style.borderColor = '';
-            associatedLabel.style.backgroundColor = '';
-        	associatedLabel.style.color = '';
-		}});
-		renderQuizQuestions();
-	});
-});	
 
 submitBtn.addEventListener('click',() => {
     confirmDialog.showModal(); 
@@ -413,7 +505,15 @@ confirmDialog.addEventListener('click', (event) => {
     }
 });
 
+quizCategory.addEventListener('change', ()=>{
+	updateAllotedTimeDisplay() 
+	updateTotalQuestionsDisplay()
+});
+
 document.addEventListener('DOMContentLoaded', () => {
+	populateCategoryDropdown()
+	updateAllotedTimeDisplay() 
+    updateTotalQuestionsDisplay();
 	const chosenAnswers = getChosenAnswers();
 	if (chosenAnswers[0] !== 'none' && !chosenAnswers[2]) {
 		renderQuizQuestions();
