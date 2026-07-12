@@ -304,9 +304,19 @@ Redundant Progress Bar (not currently used)
 /* Toggle with JS: questions the user has already answered */
 .move-to-question-btn.answered {
     border-color: #1b0dd8;
+    box-shadow: 0 0 4px rgba(255, 171, 0, 0.6);
 }
 .move-to-question-btn.correct {
     border-color: #4caf50;
+    box-shadow: 0 0 4px rgba(255, 171, 0, 0.6);
+}
+.move-to-question-btn.wrong {
+    border-color: #f44336; /* red, matches your incorrect label color */
+    box-shadow: 0 0 4px rgba(255, 171, 0, 0.6);
+}
+.move-to-question-btn.missed {
+    border-color: #ffab00;
+    box-shadow: 0 0 4px rgba(255, 171, 0, 0.6);
 }
 
 

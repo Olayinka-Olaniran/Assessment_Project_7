@@ -84,28 +84,33 @@ function renderQuizQuestions(){
 	if(chosenAnswers[2]){
 		
 		const correctAnswers = QuizQuestions[`${chosenAnswers[0]}Answers`];
-		chosenAnswers[1].forEach((answer) => {
-		if(answer.answer == correctAnswers[answer.id - 1]){
-			moveToBtns.forEach((btn) => {
-			if (answer.id === parseInt(btn.dataset.questionNo) && answer.answer === correctAnswers[answer.id - 1]) {
-				btn.classList.remove('answered');
-				btn.classList.add('correct');
-			}
-		});
-		}
-	})
+if (chosenAnswers[2]) {
+    moveToBtns.forEach((btn) => {
+        const qNo = parseInt(btn.dataset.questionNo);
+        const userAnswer = chosenAnswers[1].find((answer) => answer.id === qNo);
+
+        btn.classList.remove('answered', 'correct', 'wrong', 'missed');
+
+        if (!userAnswer) {
+            btn.classList.add('missed');
+        } else if (userAnswer.answer === correctAnswers[qNo - 1]) {
+            btn.classList.add('correct');
+        } else {
+            btn.classList.add('wrong');
+        }
+    });
+}
 	}
 
 if(chosenAnswers[2]){ 
 	let selectedAnswer;
 	let selectedChoice;
 	let associatedLabel;
+	let correctInputChoiceLabel;
 	const correctAnswers = QuizQuestions[`${chosenAnswers[0]}Answers`];
-	if(!chosenAnswers[1] == []){
-		selectedAnswer = chosenAnswers[1].find((answer) => answer.id === currentQuestionIndex + 1)
-	}else{
-		selectedAnswer = undefined;
-	}
+	
+	selectedAnswer = chosenAnswers[1].find((answer) => answer.id === currentQuestionIndex + 1)
+	
 	if(selectedAnswer != undefined){
 	selectedChoice = document.querySelector(`input[value="${selectedAnswer.answer}"]`);
 	}
@@ -132,20 +137,25 @@ if(chosenAnswers[2]){
         // Grab the actual styled label next to the input
         associatedLabel = selectedChoice.nextElementSibling;
 	}
-        const correctInputChoiceLabel = correctInputChoice.nextElementSibling;
+
+		if(correctInputChoice){
+        correctInputChoiceLabel = correctInputChoice.nextElementSibling;
+		}
         
-			if(selectedAnswer == undefined ){
+
+		if (selectedAnswer == undefined) {
+			if (correctInputChoice) {
 				correctInputChoiceLabel.style.borderColor = '#4caf50';
-                correctInputChoiceLabel.style.backgroundColor = 'rgba(76, 175, 80, 0.12)';
-                correctInputChoiceLabel.style.color = '#4caf50';
+				correctInputChoiceLabel.style.backgroundColor = 'rgba(76, 175, 80, 0.12)';
+				correctInputChoiceLabel.style.color = '#4caf50';
 				correctInputChoiceLabel.appendChild(correctMsgElement);
-			}else if(selectedAnswer.answer == correctAnswers[currentQuestionIndex]){
+			}}else if(selectedAnswer.answer == correctAnswers[currentQuestionIndex]){
                 // Correct styling overrides
                 associatedLabel.style.borderColor = '#4caf50';
                 associatedLabel.style.backgroundColor = 'rgba(76, 175, 80, 0.12)';
                 associatedLabel.style.color = '#4caf50';
 				associatedLabel.appendChild(correctMsgElement);
-            } else if(selectedAnswer.answer != correctAnswers[currentQuestionIndex]){
+            } else if(selectedAnswer.answer != correctAnswers[currentQuestionIndex] && correctInputChoice){
                 // Incorrect styling overrides
                 associatedLabel.style.borderColor = '#f44336';
                 associatedLabel.style.backgroundColor = 'rgba(244, 67, 54, 0.12)';
@@ -257,7 +267,6 @@ function storeChosenAnswers(e){
 function renderQuizResults(){
 	const chosenAnswers = getChosenAnswers();
 	chosenAnswers[2] = true;
-	console.log(chosenAnswers[0], chosenAnswers[1], chosenAnswers[2]);
 	const correctAnswers = QuizQuestions[`${chosenAnswers[0]}Answers`];
 	const correctCount = chosenAnswers[1].filter((answer) => {
 		answer.answer == correctAnswers[answer.id - 1];
