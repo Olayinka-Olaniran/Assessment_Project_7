@@ -47,6 +47,11 @@ h1 {
     letter-spacing: 0.5px;
 }
 
+.quiz-container h1 {
+    padding-left: clamp(3.5rem, 12vw, 5rem);
+    padding-right: clamp(3.5rem, 12vw, 5rem);
+}
+
 h3 {
     color: #e0e1dd;
     font-size: clamp(0.9rem, 3vw, 1.1rem);
@@ -69,7 +74,7 @@ li {
 
 /* Centered Dropdown Styling */
 select {
-    width: 85%; /* Sits nicely in the middle */
+    width: 100%; /* Sits nicely in the middle */
     align-self: center; /* Centers the element within the card flex direction */
 	text-align: center; /* Centers the text inside the dropdown */
     padding: clamp(0.6rem, 2.5vw, 0.75rem) 1rem;
@@ -242,6 +247,8 @@ Redundant Progress Bar (not currently used)
     color: #e0e1dd;
     cursor: pointer;
     font-size: clamp(0.85rem, 3vw, 1rem);
+    overflow-wrap: break-word;
+    word-break: break-word;
     transition: border-color 0.2s, background-color 0.2s, color 0.2s;
 }
 
@@ -310,15 +317,15 @@ Redundant Progress Bar (not currently used)
 /* Toggle with JS: questions the user has already answered */
 .move-to-question-btn.answered {
     border-color: #1b0dd8;
-    box-shadow: 0 0 4px rgba(255, 171, 0, 0.6);
+    box-shadow: 0 0 4px rgba(27, 13, 216, 0.6);
 }
 .move-to-question-btn.correct {
     border-color: #4caf50;
-    box-shadow: 0 0 4px rgba(255, 171, 0, 0.6);
+    box-shadow: 0 0 4px rgba(76, 175, 80, 0.6);
 }
 .move-to-question-btn.wrong {
-    border-color: #f44336; /* red, matches your incorrect label color */
-    box-shadow: 0 0 4px rgba(255, 171, 0, 0.6);
+    border-color: #f44336;
+    box-shadow: 0 0 4px rgba(244, 67, 54, 0.6);
 }
 .move-to-question-btn.missed {
     border-color: #ffab00;
