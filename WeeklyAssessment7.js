@@ -396,7 +396,11 @@ function renderQuizReview(){
 	renderQuizQuestions();
 }
 
-startBtn.addEventListener('click',renderQuizQuestions);
+startBtn.addEventListener('click',()=>{
+    localStorage.removeItem("chosenAnswers");
+    currentQuestionIndex = 0
+    renderQuizQuestions()
+});
 
 allChoices.forEach((choice) => {
 	choice.addEventListener('click',(e) => {
